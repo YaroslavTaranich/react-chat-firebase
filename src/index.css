@@ -1,13 +1,122 @@
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+a {
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.l {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.loader {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(#f07e6e, #84cdfa, #5ad1cd);
+  animation: animate 1.2s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(#f07e6e, #84cdfa, #5ad1cd);
+}
+
+.loader span:nth-child(1) {
+  filter: blur(5px);
+}
+
+.loader span:nth-child(2) {
+  filter: blur(10px);
+}
+
+.loader span:nth-child(3) {
+  filter: blur(25px);
+}
+
+.loader span:nth-child(4) {
+  filter: blur(50px);
+}
+
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background: rgba(255, 255, 255, 0.092);
+  border: solid white 10px;
+  border-radius: 50%;
+}
+
+.message-box {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  gap: 10px;
+  padding: 10px;
+  background-color:rgba(0, 0, 0, 0.152);
+  height: 80vh;
+  width: 100%;
+  overflow-y: auto;
+
+}
+
+.message {
+  background-color: rgba(71, 71, 239, 0.253);
+  margin-right:auto;
+  padding: 10px 20px;
+  border-radius:5px;
+  max-width: 65%;;
+}
+.message--my {
+  margin-right:0;
+  margin-left: auto;  
+    background-color: rgba(71, 239, 116, 0.253);
+
+}
+
+.name {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.text {
+  margin-top: 20px;
+}
+
+.message-form {
+  display: flex;
+}
+
+.message-form div {
+  width: 100%;
 }
