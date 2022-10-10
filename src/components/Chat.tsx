@@ -48,10 +48,10 @@ function Chat() {
   return (
     <Container>
       <Grid justifyContent="center" container spacing={0}>
-        <Grid item xs={4}>
+        <Grid item md={4} sx={{ width: '100%' }}>
           <Rooms selectRoom={selectRoom} selectedRoom={selectedRoom} clearChat={clearChat} />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item md={8} sx={{ width: '100%' }}>
           {messages && user && <Messages messages={messages} uid={user.uid} roomId={selectedRoom} />}
 
           {selectedRoom && <MessageInput sendMessage={sendMessage} />}

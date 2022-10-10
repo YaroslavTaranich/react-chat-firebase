@@ -122,3 +122,14 @@ a {
   right: 20px;
   bottom: 40px;
 }
+
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobile-only {
+  display: block;
+}
+}

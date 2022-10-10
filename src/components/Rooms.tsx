@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Edit } from '@mui/icons-material'
+import MenuIcon from '@mui/icons-material/Menu'
 import { addDoc, deleteDoc, doc, FieldValue, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useContext, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -38,6 +39,7 @@ interface RoomsProps {
 function Rooms({ selectRoom, clearChat, selectedRoom }: RoomsProps) {
   const [editing, setEditing] = useState(false)
   const [editingRoom, setEditingRoom] = useState('')
+  const [showRooms, setShowRooms] = useState(true)
 
   const { auth, firestore } = useContext(Context)
   const [user] = useAuthState(auth)
@@ -85,8 +87,23 @@ function Rooms({ selectRoom, clearChat, selectedRoom }: RoomsProps) {
     <Grid
       container
       direction="column"
-      sx={{ background: '#efefef', height: '80vh', position: 'relative', pb: 10, flexWrap: 'nowrap' }}
+      sx={{
+        background: '#efefef',
+        height: showRooms ? '80vh' : '5vh',
+        position: 'relative',
+        pb: 10,
+        flexWrap: 'nowrap',
+        transition: 'all .4s',
+      }}
     >
+      <div className="mobile-only">
+        <IconButton
+          sx={{ color: '#FFF', position: 'absolute', top: 15, left: 10 }}
+          onClick={() => setShowRooms((s) => !s)}
+        >
+          <MenuIcon />
+        </IconButton>
+      </div>
       <Typography
         sx={{ p: 2, background: '#9c27b0', borderRadius: '0 0 10px 10px', textAlign: 'center' }}
         variant="h6"
@@ -95,7 +112,7 @@ function Rooms({ selectRoom, clearChat, selectedRoom }: RoomsProps) {
       >
         Select a room to chat
       </Typography>
-      <List sx={{ width: '100%', overflowY: 'auto' }}>
+      <List sx={{ width: '100%', p: 0, overflowY: showRooms ? 'auto' : 'hidden', height: showRooms ? 'auto' : 0 }}>
         {rooms &&
           snapshot &&
           rooms.map((room, i) => (
@@ -134,12 +151,14 @@ function Rooms({ selectRoom, clearChat, selectedRoom }: RoomsProps) {
             </ListItem>
           ))}
       </List>
-      <ChatControls
-        clearChat={clearChat}
-        createRoom={createRoom}
-        isRoomSelected={Boolean(selectedRoom)}
-        isRooms={Boolean(rooms?.length)}
-      />
+      {showRooms && (
+        <ChatControls
+          clearChat={clearChat}
+          createRoom={createRoom}
+          isRoomSelected={Boolean(selectedRoom)}
+          isRooms={Boolean(rooms?.length)}
+        />
+      )}
       <RoomControlModal
         currentName={editingRoom}
         isOpen={editing}
