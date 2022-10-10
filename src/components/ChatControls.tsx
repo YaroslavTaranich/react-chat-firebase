@@ -81,7 +81,7 @@ const ChatControls: FC<ChatControlsProps> = ({ clearChat, createRoom, isRoomSele
       >
         <DialogTitle>Create a new room!</DialogTitle>
         <form onSubmit={(e) => createRoomHandler(e)}>
-          <DialogContent sx={{ width: 600 }}>
+          <DialogContent sx={{ maxWidth: 600 }}>
             <DialogContentText id="alert-dialog-slide-description">Enter the name of a new room.</DialogContentText>
 
             <TextField

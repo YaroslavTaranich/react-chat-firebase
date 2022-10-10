@@ -35,7 +35,7 @@ function RoomControlModal({ currentName, isOpen, close, deleteRoom, editRoom }: 
     >
       <DialogTitle>Edit the room.</DialogTitle>
       <form onSubmit={(e) => editRoomHandler(e)}>
-        <DialogContent sx={{ width: 600 }}>
+        <DialogContent sx={{ maxWidth: 600 }}>
           <DialogContentText id="alert-dialog-slide-description">Enter new name of a the room.</DialogContentText>
 
           <TextField

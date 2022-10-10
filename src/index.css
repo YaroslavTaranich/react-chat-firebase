@@ -123,13 +123,12 @@ a {
   bottom: 40px;
 }
 
-
 .mobile-only {
   display: none;
 }
 
 @media (max-width: 900px) {
   .mobile-only {
-  display: block;
-}
+    display: block;
+  }
 }
