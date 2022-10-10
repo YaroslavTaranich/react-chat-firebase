@@ -32,6 +32,7 @@ function AppRouter() {
 
   return (
     <Routes>
+      <Route index element={<Navigate to="/chat" />} />
       {privateRoutes.map(({ path, Component }) => (
         <Route
           key={path}

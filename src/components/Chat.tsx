@@ -1,62 +1,64 @@
-import { Button, Container, Grid, TextField } from '@mui/material'
-import { query, addDoc, serverTimestamp, orderBy } from 'firebase/firestore'
-import { useState, useContext, FormEvent } from 'react'
+import { Container, Grid } from '@mui/material'
+import { query, addDoc, serverTimestamp, orderBy, deleteDoc } from 'firebase/firestore'
+import React, { useContext, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 import { Context, createCollection } from '../context/Context'
 import { IMessage } from '../models/message'
 
+import MessageInput from './MesageInput'
 import Messages from './Messages'
+import Rooms from './Rooms'
 import Spinner from './Spinner'
 
 function Chat() {
-  const [value, setValue] = useState('')
+  const [selectedRoom, setSelectedRoom] = useState('')
   const { auth } = useContext(Context)
   const [user] = useAuthState(auth)
 
   const messagesRef = createCollection<IMessage>('messages')
   const q = query<IMessage>(messagesRef, orderBy('createdAt'))
-  const [messages, loading] = useCollectionData<IMessage>(q)
-  const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const [messages, loading, error, snapshot] = useCollectionData<IMessage>(q)
+
+  const sendMessage = async (value: string) => {
     if (user) {
       addDoc<IMessage>(messagesRef, {
+        roomId: selectedRoom,
         uid: user.uid,
         displayName: user.displayName,
         photoUrl: user.photoURL,
         text: value,
         createdAt: serverTimestamp(),
       })
-      setValue('')
     }
   }
+  const selectRoom = (id: string) => setSelectedRoom(id)
+
+  const clearChat = async () => {
+    if (snapshot)
+      snapshot.forEach((doc) => {
+        if (doc.data().roomId === selectedRoom) deleteDoc(doc.ref)
+      })
+  }
+
   if (loading) return <Spinner />
+  if (error) return <div>{JSON.stringify(error)}</div>
 
   return (
     <Container>
-      <Grid justifyContent="center">
-        {messages && user && <Messages messages={messages} uid={user.uid} />}
+      <Grid justifyContent="center" container spacing={0}>
+        <Grid item xs={4}>
+          <Rooms selectRoom={selectRoom} selectedRoom={selectedRoom} clearChat={clearChat} />
+        </Grid>
+        <Grid item xs={8}>
+          {messages && user && <Messages messages={messages} uid={user.uid} roomId={selectedRoom} />}
 
-        <form onSubmit={(e) => sendMessage(e)} className="message-form">
-          <div>
-            <TextField
-              variant="outlined"
-              fullWidth
-              maxRows={2}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
-          <Button variant="contained" type="submit" color="secondary">
-            SEND
-          </Button>
-        </form>
+          {selectedRoom && <MessageInput sendMessage={sendMessage} />}
+        </Grid>
       </Grid>
     </Container>
   )
-
-  return <h1>CHAT</h1>
 }
 
 export default Chat
